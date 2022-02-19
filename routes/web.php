@@ -20,3 +20,5 @@ use App\Http\Controllers\CrudController;
 
 Route::get('/', [CrudController::class, 'index'])->name('home');
 Route::post('/', [CrudController::class, 'store'])->name('add.store');
+Route::get('/hapus-buku/{id}', [CrudController::class, 'delete']);
+Route::match(['get', 'post'], '/edit/{id}', [CrudController::class, 'editData']);

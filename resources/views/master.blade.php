@@ -26,6 +26,11 @@
                     {{ session('success') }}
                 </div>
             @endif
+            @if (session('successDelete'))
+                <div class="alert alert-danger">
+                    {{ session('successDelete') }}
+                </div>
+            @endif
 
             <table class="table table-hover">
                 <thead>
@@ -48,8 +53,8 @@
                         <td>{{ $row->pengarang }}</td>
                         <td>{{ $row->tahun_terbit }}</td>
                         <td>
-                            <a href="" class="btn btn-warning"><i class="fa fa-solid fa-pencil"></i></a>
-                            <a href="/hapus-buku/{{ $row->id }}" data-bs-toggle="modal" data-bs-target="#editModal" data-bs-id="{{ $row->id }}" class="btn btn-danger"><i class="fa fa-solid fa-trash"></i></a>
+                            <a href="" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal-{{ $row->id }}"><i class="fa fa-solid fa-pencil"></i></a>
+                            <a href="/hapus-buku/{{ $row->id }}" class="btn btn-danger"><i class="fa fa-solid fa-trash"></i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -92,40 +97,44 @@
     </div>
 
     <!-- Modal Edit Data -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    @foreach ($perpus as $row)
+    <div class="modal fade" id="editModal-{{ $row->id }}" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Data Buku</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('add.store') }}" method="post">
+                <form action="{{ url('/edit/'. $row->id) }}" method="post" >
                     <div class="modal-body">
                         {{ csrf_field() }}
+
                         <div class="mb-2">
                             <label for="judul-buku" class="col-form-label">Judul Buku:</label>
-                            <input type="text" class="form-control" name="buku" required>
+                            <input type="text" class="form-control" name="buku" value="{{ $row->buku }}" required>
                         </div>
                         <div class="mb-2">
                             <label for="pengarang" class="col-form-label">Pengarang:</label>
-                            <input type="text" class="form-control" name="pengarang" required>
+                            <input type="text" class="form-control" name="pengarang" value="{{ $row->pengarang }}" required>
                         </div>
                         <div class="mb-2">
                             <label for="tahun-terbit" class="col-form-label">Tahun Terbit:</label>
-                            <input type="number" class="form-control" name="tahun_terbit" required>
+                            <input type="number" class="form-control" name="tahun_terbit" value="{{ $row->tahun_terbit }}" required>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary">Tambah</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Edit Data</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    @endforeach
 
     <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js" integrity="sha512-OvBgP9A2JBgiRad/mM36mkzXSXaJE9BEIENnVEmeZdITvwT09xnxLtT4twkCa8m/loMbPHsvPl0T8lRGVBwjlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
 </body>
 </html>
